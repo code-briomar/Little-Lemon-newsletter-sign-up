@@ -6,7 +6,11 @@ import {
   Image,
   Pressable,
   TextInput,
+  Platform,
+  Keyboard,
   KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Alert,
 } from "react-native";
 
 const SubscribeScreen = () => {
@@ -33,31 +37,30 @@ const SubscribeScreen = () => {
         Subscribe to our newsletter for our latest delicious recipes!
       </Text>
       <View style={pretty.inputContainer}>
-        {/* <KeyboardAvoidingView> */}
-        <TextInput
-          style={pretty.input}
-          placeholder="Type your email"
-          value={email}
-          onChangeText={onChangeEmail}
-        />
-        {/* </KeyboardAvoidingView> */}
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "android" ? "padding" : "padding"}
+        >
+          <TextInput
+            style={pretty.input}
+            placeholder="Type your email"
+            value={email}
+            onChangeText={onChangeEmail}
+            keyboardType="email-address"
+          />
+        </KeyboardAvoidingView>
       </View>
       <View style={pretty.buttonContainer}>
         {reg.test(email) === false ? (
-          <Pressable
-            style={pretty.buttonInvalid}
-            onPress={() => {
-              // navigation.navigate("Subscribe");
-            }}
-          >
+          <Pressable style={pretty.buttonInvalid}>
             <Text style={pretty.buttonText}>Subscribe</Text>
           </Pressable>
         ) : (
           <Pressable
             style={pretty.button}
             onPress={() => {
-              // navigation.navigate("Subscribe");
+              Alert.alert("Thanks for subscribing, stay tuned!");
             }}
+            onPressOut={Keyboard.dismiss}
           >
             <Text style={pretty.buttonText}>Subscribe</Text>
           </Pressable>
@@ -78,14 +81,14 @@ const pretty = StyleSheet.create({
     width: 100,
   },
   bodyText: {
-    flex: 0.1,
+    flex: 0.2,
     fontSize: 15,
     maxWidth: 350,
     textAlign: "center",
     alignSelf: "center",
   },
   buttonContainer: {
-    flex: 0.1,
+    flex: 0.12,
     justifyContent: "flex-end",
     alignItems: "center",
   },
